@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>OBeautifulCode.DateTime.Recipes.DateTimeExtensions</id>
+    <description>Useful extension methods on DateTime</description>
+    <tags>snippet codeinclude utility shared recipe DateTime</tags>
+    <iconUrl>https://raw.githubusercontent.com/OBeautifulCode/OBeautifulCode.DateTime/master/OBeautifulCode.DateTime.Recipes/nuget-icon.png</iconUrl>
+    <dependencies>
+      <dependency id="OBeautifulCode.Assertion.Recipes.Must" version="1.0.9" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".analyzers\SuppressBecause.cs" target="content\net462\.recipes\OBeautifulCode.DateTime\SuppressBecause.cs" />
+    <file src="DateTimeExtensions.cs" target="content\net462\.recipes\OBeautifulCode.DateTime\DateTimeExtensions.cs" />
+  </files>
+</package>
