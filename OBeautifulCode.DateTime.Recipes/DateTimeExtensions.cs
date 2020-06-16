@@ -9,6 +9,8 @@
 
 namespace OBeautifulCode.DateTime.Recipes
 {
+    using System;
+
     /// <summary>
     /// Extension methods on <see cref="DateTime"/>.
     /// </summary>
@@ -19,7 +21,52 @@ namespace OBeautifulCode.DateTime.Recipes
 #else
     public
 #endif
-    class DateTimeExtensions
+    static class DateTimeExtensions
     {
+        /// <summary>
+        /// Finds a specified day-of-week after a reference date.
+        /// </summary>
+        /// <param name="value">The reference date.</param>
+        /// <param name="dayOfWeek">The next day-of-week to find.</param>
+        /// <returns>
+        /// Returns the specified day-of-week that falls after the reference date.
+        /// </returns>
+        public static System.DateTime Next(
+            this DateTime value,
+            DayOfWeek dayOfWeek)
+        {
+            var daysToAdd = (int)dayOfWeek - (int)value.DayOfWeek;
+            if (value.DayOfWeek >= dayOfWeek)
+            {
+                daysToAdd += 7;
+            }
+
+            var result = value.AddDays(daysToAdd);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Finds a specified day-of-week prior to a reference date.
+        /// </summary>
+        /// <param name="value">The reference date.</param>
+        /// <param name="dayOfWeek">The previous day-of-week to find.</param>
+        /// <returns>
+        /// Returns the specified day-of-week that falls prior to the reference date.
+        /// </returns>
+        public static DateTime Previous(
+            this DateTime value,
+            DayOfWeek dayOfWeek)
+        {
+            var daysToAdd = (int)dayOfWeek - (int)value.DayOfWeek;
+            if (value.DayOfWeek <= dayOfWeek)
+            {
+                daysToAdd -= 7;
+            }
+
+            var result = value.AddDays(daysToAdd);
+
+            return result;
+        }
     }
 }
