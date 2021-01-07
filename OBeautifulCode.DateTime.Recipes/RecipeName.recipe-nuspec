@@ -6,7 +6,7 @@
     <tags>snippet codeinclude utility shared recipe DateTime</tags>
     <iconUrl>https://raw.githubusercontent.com/OBeautifulCode/OBeautifulCode.DateTime/master/OBeautifulCode.DateTime.Recipes/nuget-icon.png</iconUrl>
     <dependencies>
-      <dependency id="OBeautifulCode.CodeAnalysis.Recipes.SuppressBecause" version="1.0.6" />
+      <dependency id="OBeautifulCode.CodeAnalysis.Recipes.SuppressBecause" version="1.0.14" />
     </dependencies>
   </metadata>
   <files>
