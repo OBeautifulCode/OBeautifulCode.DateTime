@@ -8,6 +8,8 @@ namespace OBeautifulCode.DateTime.Recipes.Test
 {
     using System;
 
+    using OBeautifulCode.Assertion.Recipes;
+
     using Xunit;
 
     public static class DateTimeExtensionsTest
@@ -144,6 +146,178 @@ namespace OBeautifulCode.DateTime.Recipes.Test
             Assert.Equal(new DateTime(2010, 11, 11), referenceDate7.Previous(DayOfWeek.Thursday));
             Assert.Equal(new DateTime(2010, 11, 12), referenceDate7.Previous(DayOfWeek.Friday));
             Assert.Equal(new DateTime(2010, 11, 6), referenceDate7.Previous(DayOfWeek.Saturday));
+        }
+
+        [Fact]
+        public static void ToUtc_DateTime___Should_return_value___When_value_is_already_in_Utc()
+        {
+            // Arrange
+            var expected = DateTime.UtcNow;
+
+            // Act
+            var actual = expected.ToUtc();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void ToUtc_DateTime___Should_return_value_with_Kind_changed_to_Utc___When_value_is_an_Unspecified_time()
+        {
+            // Arrange
+            var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+            var expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
+
+            // Act
+            var actual = value.ToUtc();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact(Skip = "Local time depends on where this test is running.")]
+        public static void ToUtc_DateTime___Should_return_value_converted_into_Utc___When_value_is_a_local_time()
+        {
+        }
+
+        [Fact]
+        public static void ToUtc_Nullable_DateTime___Should_throw_ArgumentNullException___When_value_is_null()
+        {
+            // Arrange
+            DateTime? value = null;
+
+            // Act
+            var actual = Record.Exception(() => value.ToUtc());
+
+            // Assert
+            actual.AsTest().Must().BeOfType<ArgumentNullException>();
+        }
+
+        [Fact]
+        public static void ToUtc_Nullable_DateTime___Should_return_value___When_value_is_already_in_Utc()
+        {
+            // Arrange
+            DateTime? expected = DateTime.UtcNow;
+
+            // Act
+            var actual = expected.ToUtc();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo((DateTime)expected);
+        }
+
+        [Fact]
+        public static void ToUtc_Nullable_DateTime___Should_return_value_with_Kind_changed_to_Utc___When_value_is_an_Unspecified_time()
+        {
+            // Arrange
+            DateTime? value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+            var expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
+
+            // Act
+            var actual = value.ToUtc();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact(Skip = "Local time depends on where this test is running.")]
+        public static void ToUtc_Nullable_DateTime___Should_return_value_converted_into_Utc___When_value_is_a_local_time()
+        {
+        }
+
+        [Fact]
+        public static void ToUnspecified_Nullable_DateTime___Should_throw_ArgumentNullException___When_value_is_null()
+        {
+            // Arrange
+            DateTime? value = null;
+
+            // Act
+            var actual = Record.Exception(() => value.ToUnspecified());
+
+            // Assert
+            actual.AsTest().Must().BeOfType<ArgumentNullException>();
+        }
+
+        [Fact]
+        public static void ToUnspecified_DateTime___Should_return_value___When_value_is_already_Unspecified()
+        {
+            // Arrange
+            var expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = expected.ToUnspecified();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void ToUnspecified_DateTime___Should_return_value_with_Kind_changed_to_Unspecified___When_value_is_an_Utc_time()
+        {
+            // Arrange
+            var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
+            var expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = value.ToUnspecified();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void ToUnspecified_DateTime___Should_return_value_with_Kind_changed_to_Unspecified___When_value_is_a_Local_time()
+        {
+            // Arrange
+            var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Local);
+            var expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = value.ToUnspecified();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void ToUnspecified_Nullable_DateTime___Should_return_value___When_value_is_already_Unspecified()
+        {
+            // Arrange
+            DateTime? expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = expected.ToUnspecified();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo((DateTime)expected);
+        }
+
+        [Fact]
+        public static void ToUnspecified_Nullable_DateTime___Should_return_value_with_Kind_changed_to_Unspecified___When_value_is_an_Utc_time()
+        {
+            // Arrange
+            DateTime? value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
+            var expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = value.ToUnspecified();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void ToUnspecified_Nullable_DateTime___Should_return_value_with_Kind_changed_to_Unspecified___When_value_is_a_Local_time()
+        {
+            // Arrange
+            DateTime? value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Local);
+            var expected = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = value.ToUnspecified();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(expected);
         }
     }
 }
