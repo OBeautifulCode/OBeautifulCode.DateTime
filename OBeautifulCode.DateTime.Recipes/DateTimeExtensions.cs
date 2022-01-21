@@ -11,8 +11,6 @@ namespace OBeautifulCode.DateTime.Recipes
 {
     using global::System;
 
-    using static global::System.FormattableString;
-
     /// <summary>
     /// Extension methods on <see cref="DateTime"/>.
     /// </summary>
