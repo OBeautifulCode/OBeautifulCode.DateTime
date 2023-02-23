@@ -319,5 +319,77 @@ namespace OBeautifulCode.DateTime.Recipes.Test
             // Assert
             actual.AsTest().Must().BeEqualTo(expected);
         }
+
+        [Fact]
+        public static void RoundDownToEvenMinute___Should_remove_partial_minutes___When_value_has_partial_minutes()
+        {
+            // Arrange
+            var input1 = new DateTime(2020, 10, 10, 16, 20, 13, DateTimeKind.Unspecified);
+            var input2 = new DateTime(2020, 10, 10, 16, 20, 13, DateTimeKind.Local);
+            var input3 = new DateTime(2020, 10, 10, 16, 20, 13, DateTimeKind.Utc);
+
+            var expected1 = new DateTime(2020, 10, 10, 16, 20, 0, DateTimeKind.Unspecified);
+            var expected2 = new DateTime(2020, 10, 10, 16, 20, 0, DateTimeKind.Local);
+            var expected3 = new DateTime(2020, 10, 10, 16, 20, 0, DateTimeKind.Utc);
+
+            // Act
+            var actual1 = input1.RoundDownToEvenMinute();
+            var actual2 = input2.RoundDownToEvenMinute();
+            var actual3 = input3.RoundDownToEvenMinute();
+
+            // Assert
+            actual1.MustForTest().BeEqualTo(expected1);
+            actual2.MustForTest().BeEqualTo(expected2);
+            actual3.MustForTest().BeEqualTo(expected3);
+        }
+
+        [Fact]
+        public static void AdvanceToNextMatchingHourAndMinute___Should_advance_to_next_DateTime_matching_inputs___Based_on_input()
+        {
+            // Arrange
+            var expectedHour = 16;
+            var input1 = new DateTime(2020, 10, 10, expectedHour, 20, 13, DateTimeKind.Unspecified);
+            var input2 = new DateTime(2020, 10, 10, expectedHour, 10, 13, DateTimeKind.Local);
+            var input3 = new DateTime(2020, 10, 10, expectedHour, 15, 13, DateTimeKind.Utc);
+
+            var expectedMinute = 15;
+            var expected1 = new DateTime(2020, 10, 11, expectedHour, expectedMinute, 13, DateTimeKind.Unspecified);
+            var expected2 = new DateTime(2020, 10, 10, expectedHour, expectedMinute, 13, DateTimeKind.Local);
+            var expected3 = new DateTime(2020, 10, 11, expectedHour, expectedMinute, 13, DateTimeKind.Utc);
+
+            // Act
+            var actual1 = input1.AdvanceToNextMatchingHourAndMinute(expectedHour, expectedMinute);
+            var actual2 = input2.AdvanceToNextMatchingHourAndMinute(expectedHour, expectedMinute);
+            var actual3 = input3.AdvanceToNextMatchingHourAndMinute(expectedHour, expectedMinute);
+
+            // Assert
+            actual1.MustForTest().BeEqualTo(expected1);
+            actual2.MustForTest().BeEqualTo(expected2);
+            actual3.MustForTest().BeEqualTo(expected3);
+        }
+
+        [Fact]
+        public static void AdvanceToNextMatchingMinute___Should_advance_to_next_DateTime_matching_inputs___Based_on_input()
+        {
+            // Arrange
+            var input1 = new DateTime(2020, 10, 10, 16, 20, 13, DateTimeKind.Unspecified);
+            var input2 = new DateTime(2020, 10, 10, 16, 10, 13, DateTimeKind.Local);
+            var input3 = new DateTime(2020, 10, 10, 16, 15, 13, DateTimeKind.Utc);
+
+            var expectedMinute = 15;
+            var expected1 = new DateTime(2020, 10, 10, 17, expectedMinute, 13, DateTimeKind.Unspecified);
+            var expected2 = new DateTime(2020, 10, 10, 16, expectedMinute, 13, DateTimeKind.Local);
+            var expected3 = new DateTime(2020, 10, 10, 17, expectedMinute, 13, DateTimeKind.Utc);
+
+            // Act
+            var actual1 = input1.AdvanceToNextMatchingMinute(expectedMinute);
+            var actual2 = input2.AdvanceToNextMatchingMinute(expectedMinute);
+            var actual3 = input3.AdvanceToNextMatchingMinute(expectedMinute);
+
+            // Assert
+            actual1.MustForTest().BeEqualTo(expected1);
+            actual2.MustForTest().BeEqualTo(expected2);
+            actual3.MustForTest().BeEqualTo(expected3);
+        }
     }
 }
