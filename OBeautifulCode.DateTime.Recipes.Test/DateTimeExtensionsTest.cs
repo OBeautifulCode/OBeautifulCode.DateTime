@@ -344,7 +344,7 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         }
 
         [Fact]
-        public static void RewindToNextMachingHourAndMinute___Should_fail___With_invalid_inputs()
+        public static void RewindToNextMatchingHourAndMinute___Should_fail___With_invalid_inputs()
         {
             var exception1 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingHourAndMinute(-1, 10));
             exception1.MustForTest().BeOfType<ArgumentException>();
@@ -389,7 +389,7 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         }
 
         [Fact]
-        public static void RewindToNextMachingMinute___Should_fail___With_invalid_inputs()
+        public static void RewindToNextMatchingMinute___Should_fail___With_invalid_inputs()
         {
             var exception1 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingMinute(-1));
             exception1.MustForTest().BeOfType<ArgumentException>();
@@ -425,7 +425,7 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         }
 
         [Fact]
-        public static void AdvanceToNextMachingHourAndMinute___Should_fail___With_invalid_inputs()
+        public static void AdvanceToNextMatchingHourAndMinute___Should_fail___With_invalid_inputs()
         {
             var exception1 = Record.Exception(() => DateTime.UtcNow.AdvanceToNextMatchingHourAndMinute(-1, 10));
             exception1.MustForTest().BeOfType<ArgumentException>();
