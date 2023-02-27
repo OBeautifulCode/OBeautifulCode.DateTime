@@ -321,7 +321,7 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         }
 
         [Fact]
-        public static void RoundDownToEvenMinute___Should_remove_partial_minutes___When_value_has_partial_minutes()
+        public static void RewindToEvenMinute___Should_remove_partial_minutes___When_value_has_partial_minutes()
         {
             // Arrange
             var input1 = new DateTime(2020, 10, 10, 16, 20, 13, DateTimeKind.Unspecified);
@@ -333,14 +333,115 @@ namespace OBeautifulCode.DateTime.Recipes.Test
             var expected3 = new DateTime(2020, 10, 10, 16, 20, 0, DateTimeKind.Utc);
 
             // Act
-            var actual1 = input1.RoundDownToEvenMinute();
-            var actual2 = input2.RoundDownToEvenMinute();
-            var actual3 = input3.RoundDownToEvenMinute();
+            var actual1 = input1.RewindToEvenMinute();
+            var actual2 = input2.RewindToEvenMinute();
+            var actual3 = input3.RewindToEvenMinute();
 
             // Assert
             actual1.MustForTest().BeEqualTo(expected1);
             actual2.MustForTest().BeEqualTo(expected2);
             actual3.MustForTest().BeEqualTo(expected3);
+        }
+
+        [Fact]
+        public static void RewindToNextMatchingHourAndMinute___Should_fail___With_invalid_inputs()
+        {
+            var exception1 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingHourAndMinute(-1, 10));
+            exception1.MustForTest().BeOfType<ArgumentException>();
+            exception1?.Message.MustForTest().ContainString("The hour of the day cannot be less than 0.  It was -1");
+
+            var exception2 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingHourAndMinute(24, 10));
+            exception2.MustForTest().BeOfType<ArgumentException>();
+            exception2?.Message.MustForTest().ContainString("The hour of the day cannot be more than 23.  It was 24");
+
+            var exception3 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingHourAndMinute(10, -1));
+            exception3.MustForTest().BeOfType<ArgumentException>();
+            exception3?.Message.MustForTest().ContainString("The minute of the hour cannot be less than 0.  It was -1");
+
+            var exception4 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingHourAndMinute(10, 60));
+            exception4.MustForTest().BeOfType<ArgumentException>();
+            exception4?.Message.MustForTest().ContainString("The minute of the hour cannot be more than 59.  It was 60");
+        }
+
+        [Fact]
+        public static void RewindToNextMatchingHourAndMinute___Should_rollback_to_next_DateTime_matching_inputs___Based_on_input()
+        {
+            // Arrange
+            var expectedHour = 16;
+            var input1 = new DateTime(2020, 10, 10, expectedHour, 20, 13, DateTimeKind.Unspecified);
+            var input2 = new DateTime(2020, 10, 10, expectedHour, 10, 13, DateTimeKind.Local);
+            var input3 = new DateTime(2020, 10, 10, expectedHour, 15, 13, DateTimeKind.Utc);
+
+            var expectedMinute = 15;
+            var expected1 = new DateTime(2020, 10, 10, expectedHour, expectedMinute, 13, DateTimeKind.Unspecified);
+            var expected2 = new DateTime(2020, 10, 9, expectedHour, expectedMinute, 13, DateTimeKind.Local);
+            var expected3 = new DateTime(2020, 10, 9, expectedHour, expectedMinute, 13, DateTimeKind.Utc);
+
+            // Act
+            var actual1 = input1.RewindToNextMatchingHourAndMinute(expectedHour, expectedMinute);
+            var actual2 = input2.RewindToNextMatchingHourAndMinute(expectedHour, expectedMinute);
+            var actual3 = input3.RewindToNextMatchingHourAndMinute(expectedHour, expectedMinute);
+
+            // Assert
+            actual1.MustForTest().BeEqualTo(expected1);
+            actual2.MustForTest().BeEqualTo(expected2);
+            actual3.MustForTest().BeEqualTo(expected3);
+        }
+
+        [Fact]
+        public static void RewindToNextMatchingMinute___Should_fail___With_invalid_inputs()
+        {
+            var exception1 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingMinute(-1));
+            exception1.MustForTest().BeOfType<ArgumentException>();
+            exception1?.Message.MustForTest().ContainString("The minute of the hour cannot be less than 0.  It was -1");
+
+            var exception2 = Record.Exception(() => DateTime.UtcNow.RewindToNextMatchingMinute(60));
+            exception2.MustForTest().BeOfType<ArgumentException>();
+            exception2?.Message.MustForTest().ContainString("The minute of the hour cannot be more than 59.  It was 60");
+        }
+
+        [Fact]
+        public static void RewindToNextMatchingMinute___Should_rollback_to_next_DateTime_matching_inputs___Based_on_input()
+        {
+            // Arrange
+            var input1 = new DateTime(2020, 10, 10, 16, 20, 13, DateTimeKind.Unspecified);
+            var input2 = new DateTime(2020, 10, 10, 16, 10, 13, DateTimeKind.Local);
+            var input3 = new DateTime(2020, 10, 10, 16, 15, 13, DateTimeKind.Utc);
+
+            var expectedMinute = 15;
+            var expected1 = new DateTime(2020, 10, 10, 16, expectedMinute, 13, DateTimeKind.Unspecified);
+            var expected2 = new DateTime(2020, 10, 10, 15, expectedMinute, 13, DateTimeKind.Local);
+            var expected3 = new DateTime(2020, 10, 10, 15, expectedMinute, 13, DateTimeKind.Utc);
+
+            // Act
+            var actual1 = input1.RewindToNextMatchingMinute(expectedMinute);
+            var actual2 = input2.RewindToNextMatchingMinute(expectedMinute);
+            var actual3 = input3.RewindToNextMatchingMinute(expectedMinute);
+
+            // Assert
+            actual1.MustForTest().BeEqualTo(expected1);
+            actual2.MustForTest().BeEqualTo(expected2);
+            actual3.MustForTest().BeEqualTo(expected3);
+        }
+
+        [Fact]
+        public static void AdvanceToNextMatchingHourAndMinute___Should_fail___With_invalid_inputs()
+        {
+            var exception1 = Record.Exception(() => DateTime.UtcNow.AdvanceToNextMatchingHourAndMinute(-1, 10));
+            exception1.MustForTest().BeOfType<ArgumentException>();
+            exception1?.Message.MustForTest().ContainString("The hour of the day cannot be less than 0.  It was -1");
+
+            var exception2 = Record.Exception(() => DateTime.UtcNow.AdvanceToNextMatchingHourAndMinute(24, 10));
+            exception2.MustForTest().BeOfType<ArgumentException>();
+            exception2?.Message.MustForTest().ContainString("The hour of the day cannot be more than 23.  It was 24");
+
+            var exception3 = Record.Exception(() => DateTime.UtcNow.AdvanceToNextMatchingHourAndMinute(10, -1));
+            exception3.MustForTest().BeOfType<ArgumentException>();
+            exception3?.Message.MustForTest().ContainString("The minute of the hour cannot be less than 0.  It was -1");
+
+            var exception4 = Record.Exception(() => DateTime.UtcNow.AdvanceToNextMatchingHourAndMinute(10, 60));
+            exception4.MustForTest().BeOfType<ArgumentException>();
+            exception4?.Message.MustForTest().ContainString("The minute of the hour cannot be more than 59.  It was 60");
         }
 
         [Fact]
@@ -366,6 +467,18 @@ namespace OBeautifulCode.DateTime.Recipes.Test
             actual1.MustForTest().BeEqualTo(expected1);
             actual2.MustForTest().BeEqualTo(expected2);
             actual3.MustForTest().BeEqualTo(expected3);
+        }
+
+        [Fact]
+        public static void AdvanceToNextMatchingMinute___Should_fail___With_invalid_inputs()
+        {
+            var exception1 = Record.Exception(() => DateTime.UtcNow.AdvanceToNextMatchingMinute(-1));
+            exception1.MustForTest().BeOfType<ArgumentException>();
+            exception1?.Message.MustForTest().ContainString("The minute of the hour cannot be less than 0.  It was -1");
+
+            var exception2 = Record.Exception(() => DateTime.UtcNow.AdvanceToNextMatchingMinute(60));
+            exception2.MustForTest().BeOfType<ArgumentException>();
+            exception2?.Message.MustForTest().ContainString("The minute of the hour cannot be more than 59.  It was 60");
         }
 
         [Fact]
