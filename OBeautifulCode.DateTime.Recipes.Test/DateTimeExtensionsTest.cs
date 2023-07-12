@@ -360,7 +360,7 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         }
 
         [Fact]
-        public static void ToSpecificTimeZone_DateTime___Should_throw_ArgumentException___When_timeZoneId_is_whitespace()
+        public static void ToSpecificTimeZone_DateTime___Should_throw_ArgumentException___When_timeZoneId_is_whiteSpace()
         {
             // Arrange
             var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
