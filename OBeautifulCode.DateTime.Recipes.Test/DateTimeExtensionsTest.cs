@@ -343,6 +343,12 @@ namespace OBeautifulCode.DateTime.Recipes.Test
             var actual = value.ToSpecificTimeZone(TimeZoneInfo.FromSerializedString(@"US Eastern Standard Time;-300;(UTC-05:00) Indiana (East);US Eastern Standard Time;US Eastern Daylight Time;[01:01:2006;12:31:2006;60;[0;02:00:00;4;1;0;];[0;02:00:00;10;5;0;];][01:01:2007;12:31:9999;60;[0;02:00:00;3;2;0;];[0;02:00:00;11;1;0;];];"));
 
             // Assert
+            foreach (TimeZoneInfo z in TimeZoneInfo.GetSystemTimeZones())
+            {
+                // For a Console App
+                Console.WriteLine(z.Id + "," + z.BaseUtcOffset + "," + z.StandardName + "," + z.DisplayName + "," + z.DaylightName);
+            }
+
             actual.DateTime.Kind.AsTest().Must().BeEqualTo(DateTimeKind.Unspecified);
             Console.WriteLine("date time: " + actual.DateTime);
             Console.WriteLine("offset: " + actual.Offset);
