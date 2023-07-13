@@ -321,20 +321,7 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         }
 
         [Fact]
-        public static void ToSpecificTimeZone_Nullable_DateTime___Should_throw_ArgumentNullException___When_value_is_null()
-        {
-            // Arrange
-            DateTime? value = null;
-
-            // Act
-            var actual = Record.Exception(() => value.ToSpecificTimeZone(DateTimeExtensions.EasternStandardTimeZoneInfoId));
-
-            // Assert
-            actual.AsTest().Must().BeOfType<ArgumentNullException>();
-        }
-
-        [Fact]
-        public static void ToSpecificTimeZone_DateTime___Should_throw_ArgumentNullException___When_timeZoneId_is_null()
+        public static void ToSpecificTimeZone_DateTime___Should_throw_ArgumentNullException___When_timeZoneInfo_is_null()
         {
             // Arrange
             var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
@@ -347,43 +334,31 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         }
 
         [Fact]
-        public static void ToSpecificTimeZone_DateTime___Should_throw_ArgumentException___When_timeZoneId_is_empty_string()
+        public static void ToSpecificTimeZone_DateTime___Should_convert_time___When_called()
         {
             // Arrange
             var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
 
             // Act
-            var actual = Record.Exception(() => value.ToSpecificTimeZone(string.Empty));
-
-            // Assert
-            actual.AsTest().Must().BeOfType<ArgumentException>();
-        }
-
-        [Fact]
-        public static void ToSpecificTimeZone_DateTime___Should_throw_ArgumentException___When_timeZoneId_is_whiteSpace()
-        {
-            // Arrange
-            var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
-
-            // Act
-            var actual = Record.Exception(() => value.ToSpecificTimeZone(" "));
-
-            // Assert
-            actual.AsTest().Must().BeOfType<ArgumentException>();
-        }
-
-        [Fact]
-        public static void ToSpecificTimeZone_DateTime___Should_convert_time___When_timeZoneId_is_provided()
-        {
-            // Arrange
-            var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
-
-            // Act
-            var actual = value.ToSpecificTimeZone(DateTimeExtensions.EasternStandardTimeZoneInfoId);
+            var actual = value.ToSpecificTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time"));
 
             // Assert
             actual.DateTime.Kind.AsTest().Must().BeEqualTo(DateTimeKind.Unspecified);
+            Console.WriteLine("offset is: " + actual.Offset);
             actual.Offset.AsTest().Must().NotBeEqualTo(TimeSpan.Zero);
+        }
+
+        [Fact]
+        public static void ToSpecificTimeZone_Nullable_DateTime___Should_throw_ArgumentNullException___When_value_is_null()
+        {
+            // Arrange
+            DateTime? value = null;
+
+            // Act
+            var actual = Record.Exception(() => value.ToSpecificTimeZone(TimeZoneInfo.Local));
+
+            // Assert
+            actual.AsTest().Must().BeOfType<ArgumentNullException>();
         }
 
         [Fact]

@@ -10,6 +10,7 @@
 namespace OBeautifulCode.DateTime.Recipes
 {
     using global::System;
+    using static global::System.FormattableString;
 
     /// <summary>
     /// Extension methods on <see cref="DateTime"/>.
@@ -23,11 +24,6 @@ namespace OBeautifulCode.DateTime.Recipes
 #endif
     static class DateTimeExtensions
     {
-        /// <summary>
-        /// The eastern standard time zone information (<see cref="TimeZoneInfo" />) identifier.
-        /// </summary>
-        public const string EasternStandardTimeZoneInfoId = "Eastern Standard Time";
-
         /// <summary>
         /// Finds a specified day-of-week after a reference date.
         /// </summary>
@@ -176,28 +172,20 @@ namespace OBeautifulCode.DateTime.Recipes
         /// Converts the specified time into a specified timezone.
         /// </summary>
         /// <param name="value">The reference time.</param>
-        /// <param name="timeZoneId">The specific identifier of the timezone to convert to.</param>
+        /// <param name="timeZoneInfo">The time zone to convert to.</param>
         /// <returns>
         /// The Specific timezone time.
         /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="timeZoneId"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="timeZoneId"/> is whitespace.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="timeZoneInfo"/> is null.</exception>
         public static DateTimeOffset ToSpecificTimeZone(
             this DateTime value,
-            string timeZoneId)
+            TimeZoneInfo timeZoneInfo)
         {
-            if (timeZoneId == null)
+            if (timeZoneInfo == null)
             {
-                throw new ArgumentNullException(nameof(timeZoneId));
+                throw new ArgumentNullException(nameof(timeZoneInfo));
             }
 
-            if (string.IsNullOrWhiteSpace(timeZoneId))
-            {
-                throw new ArgumentException("Time zone identifier must not be whitespace.", nameof(timeZoneId));
-            }
-
-            var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
-            
             DateTimeOffset newTime = TimeZoneInfo.ConvertTime(
                 value,
                 timeZoneInfo);
@@ -211,23 +199,22 @@ namespace OBeautifulCode.DateTime.Recipes
         /// Converts the specified time into a specified timezone.
         /// </summary>
         /// <param name="value">The reference time.</param>
-        /// <param name="timeZoneId">The specific identifier of the timezone to convert to.</param>
+        /// <param name="timeZoneInfo">The timezone to convert to.</param>
         /// <returns>
         /// The Specific timezone time.
         /// </returns>
         /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-        /// <exception cref="ArgumentNullException"><paramref name="timeZoneId"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="timeZoneId"/> is whitespace.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="timeZoneInfo"/> is null.</exception>
         public static DateTimeOffset ToSpecificTimeZone(
             this DateTime? value,
-            string timeZoneId)
+            TimeZoneInfo timeZoneInfo)
         {
             if (value == null)
             {
                 throw new ArgumentNullException(nameof(value));
             }
 
-            var result = ((DateTime)value).ToSpecificTimeZone(timeZoneId);
+            var result = ((DateTime)value).ToSpecificTimeZone(timeZoneInfo);
 
             return result;
         }
