@@ -338,21 +338,13 @@ namespace OBeautifulCode.DateTime.Recipes.Test
         {
             // Arrange
             var value = new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
+            var expected = new DateTime(2021, 10, 20, 17, 29, 16, DateTimeKind.Unspecified);
 
             // Act
-            var actual = value.ToSpecificTimeZone(TimeZoneInfo.FromSerializedString(@"US Eastern Standard Time;-300;(UTC-05:00) Indiana (East);US Eastern Standard Time;US Eastern Daylight Time;[01:01:2006;12:31:2006;60;[0;02:00:00;4;1;0;];[0;02:00:00;10;5;0;];][01:01:2007;12:31:9999;60;[0;02:00:00;3;2;0;];[0;02:00:00;11;1;0;];];"));
+            var actual = value.ToSpecificTimeZone(TimeZoneInfo.FindSystemTimeZoneById(@"Eastern Standard Time"));
 
             // Assert
-            foreach (TimeZoneInfo z in TimeZoneInfo.GetSystemTimeZones())
-            {
-                // For a Console App
-                Console.WriteLine(z.Id + "," + z.BaseUtcOffset + "," + z.StandardName + "," + z.DisplayName + "," + z.DaylightName);
-            }
-
-            actual.DateTime.Kind.AsTest().Must().BeEqualTo(DateTimeKind.Unspecified);
-            Console.WriteLine("date time: " + actual.DateTime);
-            Console.WriteLine("offset: " + actual.Offset);
-            actual.Offset.AsTest().Must().NotBeEqualTo(TimeSpan.Zero);
+            actual.DateTime.AsTest().Must().BeEqualTo(expected);
         }
 
         [Fact]
@@ -379,6 +371,20 @@ namespace OBeautifulCode.DateTime.Recipes.Test
 
             // Assert
             actual.AsTest().Must().BeOfType<ArgumentNullException>();
+        }
+
+        [Fact]
+        public static void ToSpecificTimeZone_Nullable_DateTime___Should_convert_time___When_called()
+        {
+            // Arrange
+            var value = (DateTime?)new DateTime(2021, 10, 20, 21, 29, 16, DateTimeKind.Utc);
+            var expected = new DateTime(2021, 10, 20, 17, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = value.ToSpecificTimeZone(TimeZoneInfo.FindSystemTimeZoneById(@"Eastern Standard Time"));
+
+            // Assert
+            actual.DateTime.AsTest().Must().BeEqualTo(expected);
         }
 
         [Fact]
