@@ -7,9 +7,9 @@
 namespace OBeautifulCode.DateTime.Recipes.Test
 {
     using System;
-
+    using System.Linq;
     using OBeautifulCode.Assertion.Recipes;
-
+    using OBeautifulCode.Type;
     using Xunit;
 
     public static class DateTimeExtensionsTest
@@ -318,6 +318,37 @@ namespace OBeautifulCode.DateTime.Recipes.Test
 
             // Assert
             actual.AsTest().Must().BeEqualTo(expected);
+        }
+
+        [Fact]
+        public static void ToStringPretty___Should_throw_ArgumentException___When_utcValue_is_not_a_UTC_time()
+        {
+            // Arrange
+            var value = new DateTime(2021, 12, 20, 21, 29, 16, DateTimeKind.Unspecified);
+
+            // Act
+            var actual = Record.Exception(() => value.ToStringPretty());
+
+            // Assert
+            actual.AsTest().Must().BeOfType<ArgumentException>();
+            actual.Message.AsTest().Must().ContainString("is not a UTC date/time");
+        }
+
+        [Fact]
+        public static void ToStringPretty___Should_return_pretty_string_with_specified_time_zone_qualifier___When_called()
+        {
+            // Arrange
+            var actualAndExpected = new[]
+            {
+                new { UtcValue = new DateTime(2021, 12, 20, 21, 29, 16, DateTimeKind.Utc), TimeZone = (TimeZoneInfo)null, Expected = "Monday, December 20, 2021 at 9:29 PM (gmt)" },
+                new { UtcValue = new DateTime(2021, 12, 20, 21, 29, 16, DateTimeKind.Utc), TimeZone = StandardTimeZone.Eastern.ToTimeZoneInfo(), Expected = "Monday, December 20, 2021 at 4:29 PM (eastern time)" },
+            };
+
+            // Act
+            var actual = actualAndExpected.Select(_ => _.UtcValue.ToStringPretty(_.TimeZone)).ToList();
+
+            // Assert
+            actual.AsTest().Must().BeEqualTo(actualAndExpected.Select(_ => _.Expected).ToList());
         }
 
         [Fact]
